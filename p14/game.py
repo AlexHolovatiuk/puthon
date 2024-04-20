@@ -63,6 +63,30 @@ class Diamond:
     def fall(self):
         self.y += self.speed
 
+class Diamonds:
+    diamonds_images: list = []
+    diamonds_list: list = []
+
+    def __init__(self):
+        self.load_images()
+
+    def load_images(self):
+        images = ('8.png', '9.png', '11.png')
+        for i in images:
+            self.diamonds_images.append(pygame.image.load(IMAGES_PATH + i))
+
+    def add(self):
+        img = self.diamonds_images[random.randint(0, len(self.diamonds_images)-1)]
+        self.diamonds_list.append(Diamond(img))
+
+    def draw(self):
+        for item in self.diamonds_list:
+            item.show()
+
+    def fall(self):
+        for item in self.diamonds_list:
+            item.fall()
+
 class Game:
     run: bool = True
     fps: int = 60
@@ -77,9 +101,14 @@ class Game:
         pygame.display.set_caption('Wizard')
         self.background_add(IMAGES_PATH + 'background.png')
         self.player = Wizard()
-
-        i = pygame.image.load(IMAGES_PATH + '8.png')
-        self.diamond = Diamond(i)
+        self.diamonds = Diamonds()
+        self.diamonds.add()
+        self.diamonds.add()
+        self.diamonds.add()
+        self.diamonds.add()
+        self.diamonds.add()
+        self.diamonds.add()
+        self.diamonds.add()
 
     def background_add(self, image: str):
         self.background = pygame.image.load(image)
@@ -104,8 +133,8 @@ class Game:
                 self.background_draw()
                 self.player.move(self.player_move)
                 self.player.show()
-                self.diamond.show()
-                self.diamond.fall()
+                self.diamonds.draw()
+                self.diamonds.fall()
 
                 pygame.display.update()
                 self.clock.tick(self.fps)
